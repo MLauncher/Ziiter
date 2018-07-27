@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<link rel="stylesheet" type="text/css" href="BootStrap.css" />
+</h:head>
+<body>
+
+	<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#{page_Changer.goToHomePage()}">Home</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="AccountCreation.xhtml">Create a
+						Account<span class="sr-only">(current)</span>
+				</a></li>
+				<li><a href="#">Link</a></li>
+
+			</ul>
+			<form class="navbar-form navbar-left" role="search"></form>
+			<h:form class="navbar-form navbar-right">
+				<div class="form-group">
+					<h:outputLabel class="label" value="#{useDAO.successuser}" />
+
+					<h:outputLabel class="label" type="#{useDAO.hidden_text}"
+						value="#{useDAO.username_display}" />
+					<h:inputText type="#{useDAO.hidden_text}" class="input-sm"
+						value="#{useBean.username}" />
+					<h:outputLabel class="label" value="#{useDAO.password_display}" />
+					<h:inputSecret type="#{useDAO.hidden_text}" class="input-sm"
+						value="#{useBean.password}" />
+				</div>
+
+				<h:commandButton class="btn btn-default"
+					action="#{page_Changer.goToYourPage(useBean.username,useBean.password)}"
+					style="display: #{useDAO.button_display};" value="Login" />
+			</h:form>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid --> </nav>
+
+	<h1>Create your account now!</h1>
+	<h:form>
+		<h:panelGrid id="panel" rows="3">
+			<f:facet name="header">
+				<h:outputLabel value="Login" />
+			</f:facet>
+			<h:outputLabel value="Enter a Username" />
+			<h:inputText id="user" value="#{useBean.username}" />
+			<h:outputLabel value="Enter a Password" />
+			<h:inputSecret id="cpass" value="#{useBean.password}" />
+
+			<h:outputLabel value="Enter password again" />
+			<h:inputSecret id="cpass2" value="#{useBean.password}" />
+			<br />
+			<f:facet name="footer">
+
+				<h:commandButton
+					action="#{useDAO.addAccount(useBean.username,useBean.password)}"
+					value="Create">
+
+				</h:commandButton>
+			</f:facet>
+			<h:outputLabel value="#{useDAO.phrase}" />
+		</h:panelGrid>
+	</h:form>
+</body>
+</html>

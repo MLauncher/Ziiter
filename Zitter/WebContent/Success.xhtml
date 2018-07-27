@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link rel="stylesheet" type="text/css" href="BootStrap.css" />
+	<style>
+.ui-panel-content {
+	background: red;
+}
+</style>
+</h:head>
+<body>
+	<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#{page_Changer.goToHomePage()}">Home</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="AccountCreation.xhtml">Create
+						Account <span class="sr-only">(current)</span>
+				</a></li>
+				<li><a href="Success.xhtml">Your Page</a></li>
+
+			</ul>
+			<form class="navbar-form navbar-left" role="search"></form>
+			<form class="navbar-form navbar-right">
+				<div class="form-group">
+					<h:outputLabel class="label" type="hidden"
+						value="#{useDAO.successuser}" />
+
+					<h:outputLabel class="label" type="#{useDAO.hidden_text}"
+						value="#{useDAO.username_display}" />
+					<h:inputText type="#{useDAO.hidden_text}" class="input-sm" value="" />
+					<h:outputLabel class="label" value="#{useDAO.password_display}" />
+					<h:inputSecret type="#{useDAO.hidden_text}" class="input-sm"
+						value="" />
+				</div>
+
+				<h:commandButton class="btn btn-default"
+					action="#{page_Changer.goToYourPage(useBean.username,useBean.password)}"
+					style="display: #{useDAO.button_display};" value="Login" />
+			</form>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid --> </nav>
+
+	#{useDAO.button_display} #{useDAO.hidden_text}
+	<h1>Welcome To Your Page</h1>
+
+	<h:form>
+		<p:panel header="Ziits">
+			<h:panelGrid column="2" style="margin-bottom:20px" cellpadding="10">
+
+				<h:dataTable id="userTable"
+					value="#{useDAO.printTweets(useBean.username)}" var="umess">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Messages" />
+						</f:facet>
+						<h:outputText value="#{umess.getMessage()}" />
+					</h:column>
+				</h:dataTable>
+			</h:panelGrid>
+			<h:outputLabel value="Add a message:" />
+			<br />
+			<p:inputTextarea id="ziltch" rows="2" cols="16"
+				value="#{useDAO.gotmess}" />
+			<h:commandButton value="Add"
+				action="#{useDAO.addMess(useBean.username,useDAO.gotmess)}" />
+		</p:panel>
+	</h:form>
+
+	<br />
+	<h:form>
+		<p:panel>
+			<h:dataTable id="dTable" value="#{useDAO.printAllTweets()}"
+				var="mess">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Message" />
+					</f:facet>
+					<h:outputText value="#{mess.getMessage()}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="User" />
+					</f:facet>
+
+					<h:commandLink
+						action="#{page_Changer.goToUserPage(mess.getUser().getUsername())}">
+						<h:outputText value="-#{mess.getUser().getUsername()}" />
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+		</p:panel>
+	</h:form>
+
+
+	<br />
+	<h:form>
+
+		<h:panelGrid column="2" style="margin-bottom:20px" cellpadding="10">
+			<p:panel>
+				<h:dataTable id="dTable"
+					value="#{useDAO.getFollowers(useBean.username)}" var="users">
+					<h:column>
+						<f:facet name="header">
+							<h:outputLabel value="What are they tweeting" />
+						</f:facet>
+						<p:panel header="#{users.getUsername()}">
+							<h:dataTable id="dTb2"
+								value="#{useDAO.printTweets(users.getUsername())}" var="whomess">
+								<h:column>
+									<h:outputText value="#{whomess.getMessage()} " />
+									<h:commandLink
+										action="#{page_Changer.goToUserPage(users.getUsername())}">
+										<h:outputText value="-#{users.getUsername()}" />
+									</h:commandLink>
+
+								</h:column>
+							</h:dataTable>
+						</p:panel>
+					</h:column>
+				</h:dataTable>
+			</p:panel>
+		</h:panelGrid>
+
+	</h:form>
+</body>
+</html>
